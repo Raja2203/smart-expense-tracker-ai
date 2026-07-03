@@ -1,1 +1,1 @@
-"# Smart Expense Tracker with AI Categorization and Insights" 
+# Smart Expense Tracker with AI Categorization and Insights
