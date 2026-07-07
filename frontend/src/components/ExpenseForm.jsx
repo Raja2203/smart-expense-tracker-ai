@@ -2,11 +2,12 @@ import { useState } from "react";
 
 function ExpenseForm({ onAddExpense }) {
   const [formData, setFormData] = useState({
-    description: "",
+    title: "",
     amount: "",
     category: "",
+    payment_mode: "",
+    description: "",
     expense_date: "",
-    source: "manual",
   });
 
   const handleChange = (e) => {
@@ -19,27 +20,37 @@ function ExpenseForm({ onAddExpense }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!formData.description || !formData.amount || !formData.expense_date) {
-      alert("Please fill description, amount, and date");
+    if (
+      !formData.title ||
+      !formData.amount ||
+      !formData.category ||
+      !formData.payment_mode ||
+      !formData.expense_date
+    ) {
+      alert("Please fill title, amount, category, payment mode, and date");
       return;
     }
 
     const expensePayload = {
-      description: formData.description,
+      title: formData.title,
       amount: Number(formData.amount),
-      category: formData.category || "Uncategorized",
+      category: formData.category,
+      payment_mode: formData.payment_mode,
+      description: formData.description,
       expense_date: formData.expense_date,
-      source: formData.source,
     };
+
+    console.log("Sending expense payload:", expensePayload);
 
     onAddExpense(expensePayload);
 
     setFormData({
-      description: "",
+      title: "",
       amount: "",
       category: "",
+      payment_mode: "",
+      description: "",
       expense_date: "",
-      source: "manual",
     });
   };
 
@@ -49,9 +60,9 @@ function ExpenseForm({ onAddExpense }) {
 
       <input
         type="text"
-        name="description"
-        placeholder="Description e.g. Swiggy dinner"
-        value={formData.description}
+        name="title"
+        placeholder="Title e.g. Swiggy dinner"
+        value={formData.title}
         onChange={handleChange}
       />
 
@@ -68,6 +79,27 @@ function ExpenseForm({ onAddExpense }) {
         name="category"
         placeholder="Category e.g. Food"
         value={formData.category}
+        onChange={handleChange}
+      />
+
+      <select
+        name="payment_mode"
+        value={formData.payment_mode}
+        onChange={handleChange}
+      >
+        <option value="">Select Payment Mode</option>
+        <option value="UPI">UPI</option>
+        <option value="Cash">Cash</option>
+        <option value="Credit Card">Credit Card</option>
+        <option value="Debit Card">Debit Card</option>
+        <option value="Net Banking">Net Banking</option>
+      </select>
+
+      <input
+        type="text"
+        name="description"
+        placeholder="Description optional"
+        value={formData.description}
         onChange={handleChange}
       />
 
